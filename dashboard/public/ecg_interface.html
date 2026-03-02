@@ -3,320 +3,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ECG Arrhythmia Detection | CBAM-ResNet Analysis System</title>
+    <title>CardioLens — AI-Powered ECG Arrhythmia Detection</title>
+    <meta name="description" content="Deep learning system for real-time ECG arrhythmia classification using ResNet-18 with CBAM attention and multi-modal signal encoding.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="ecg_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="landing.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo">
-                <div class="logo-icon">
-                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M4 20H10L14 8L20 32L26 14L30 20H36" stroke="url(#ecg-gradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                        <defs>
-                            <linearGradient id="ecg-gradient" x1="4" y1="20" x2="36" y2="20">
-                                <stop stop-color="#00d4ff"/>
-                                <stop offset="1" stop-color="#0099ff"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
+
+<!-- ======== NAVBAR ======== -->
+<nav class="navbar" id="navbar">
+    <div class="container navbar-inner">
+        <a href="#" class="nav-brand">
+            <div class="nav-brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12h4l3-9 4 18 3-9h4"/>
+                </svg>
+            </div>
+            CardioLens
+        </a>
+        <div class="nav-links" id="navLinks">
+            <a href="#about">About</a>
+            <a href="#pipeline">Pipeline</a>
+            <a href="#technology">Technology</a>
+            <a href="#creator">Creator</a>
+            <a href="analysis.html" class="nav-cta">
+                Launch Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+        <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+    </div>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="hero">
+    <div class="container">
+        <div class="hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Deep Learning Research Project
                 </div>
-                <div class="logo-text">
-                    <h1>ECG Analysis System</h1>
-                    <span class="subtitle">CBAM-ResNet18 Deep Learning Model</span>
+                <h1 class="hero-title">
+                    Intelligent <span class="gradient-text">ECG Arrhythmia</span> Detection System
+                </h1>
+                <p class="hero-description">
+                    A deep learning pipeline that transforms raw ECG signals into multi-modal image representations and classifies cardiac arrhythmias using ResNet-18 enhanced with CBAM attention — with full explainability via Grad-CAM.
+                </p>
+                <div class="hero-actions">
+                    <a href="analysis.html" class="btn-primary">
+                        Try Live Demo
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="#pipeline" class="btn-outline">
+                        See How It Works
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">98.35%</div>
+                        <div class="hero-stat-label">Test Accuracy</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">5</div>
+                        <div class="hero-stat-label">Arrhythmia Classes</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">&lt;100ms</div>
+                        <div class="hero-stat-label">Inference Time</div>
+                    </div>
                 </div>
             </div>
-            <div class="header-status">
-                <div class="status-indicator" id="modelStatus">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Checking...</span>
+            <div class="hero-visual reveal">
+                <div class="ecg-monitor">
+                    <div class="ecg-monitor-header">
+                        <div class="ecg-monitor-title">
+                            <span class="ecg-live-dot"></span>
+                            Live ECG Monitor
+                        </div>
+                        <span class="ecg-bpm">72 BPM</span>
+                    </div>
+                    <div class="ecg-wave-container">
+                        <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                            <line x1="0" y1="25" x2="400" y2="25" stroke="#e2e8f0" stroke-width=".5"/>
+                            <line x1="0" y1="50" x2="400" y2="50" stroke="#e2e8f0" stroke-width=".5"/>
+                            <line x1="0" y1="75" x2="400" y2="75" stroke="#e2e8f0" stroke-width=".5"/>
+                            <path class="ecg-line"
+                                  d="M0,50 L30,50 L40,48 L50,50 L60,50 L70,42 L75,15 L80,85 L85,45 L95,50
+                                     L130,50 L140,48 L150,50 L160,50 L170,42 L175,15 L180,85 L185,45 L195,50
+                                     L230,50 L240,48 L250,50 L260,50 L270,42 L275,15 L280,85 L285,45 L295,50
+                                     L330,50 L340,48 L350,50 L360,50 L370,42 L375,15 L380,85 L385,45 L395,50 L400,50"/>
+                        </svg>
+                    </div>
+                    <div class="ecg-monitor-footer">
+                        <span class="ecg-class-label">Classification</span>
+                        <span class="ecg-class-value">
+                            <span class="ecg-class-dot"></span>
+                            Normal Sinus Rhythm
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</section>
 
-    <!-- Main Content -->
-    <main class="main-container">
-        <!-- Left Panel - Input -->
-        <section class="panel input-panel">
-            <div class="panel-header">
-                <h2>Signal Input</h2>
-            </div>
-            <div class="panel-content">
-                <!-- Upload Section -->
-                <div class="input-section">
-                    <h3>Upload ECG Data</h3>
-                    <div class="upload-zone" id="uploadZone">
-                        <div class="upload-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                            </svg>
+<!-- ======== ABOUT ======== -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content reveal">
+                <span class="section-label">About the Project</span>
+                <h2 class="section-title">Transforming ECG Signals into Actionable Insights</h2>
+                <p class="section-subtitle">
+                    This project presents a complete deep learning pipeline for automatic classification of ECG heartbeats from the MIT-BIH Arrhythmia Database into five clinically relevant categories, using innovative time-series-to-image encoding and attention-enhanced CNNs.
+                </p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                         </div>
-                        <p class="upload-text">Drop CSV file here or click to browse</p>
-                        <p class="upload-hint">Accepts 1D ECG signal (187 samples)</p>
-                        <input type="file" id="fileInput" accept=".csv,.txt" hidden>
-                    </div>
-                </div>
-
-                <!-- Manual Input -->
-                <div class="input-section">
-                    <h3>Manual Input</h3>
-                    <textarea id="signalInput" class="signal-textarea" placeholder="Enter comma-separated values or paste signal data..."></textarea>
-                </div>
-
-                <!-- Sample Loader -->
-                <div class="input-section">
-                    <h3>Test Samples</h3>
-                    <div class="sample-grid" id="sampleGrid">
-                        <button class="sample-btn" data-class="0">
-                            <span class="sample-indicator normal"></span>
-                            Normal (N)
-                        </button>
-                        <button class="sample-btn" data-class="1">
-                            <span class="sample-indicator supra"></span>
-                            Supra (S)
-                        </button>
-                        <button class="sample-btn" data-class="2">
-                            <span class="sample-indicator vent"></span>
-                            Vent (V)
-                        </button>
-                        <button class="sample-btn" data-class="3">
-                            <span class="sample-indicator fusion"></span>
-                            Fusion (F)
-                        </button>
-                        <button class="sample-btn" data-class="4">
-                            <span class="sample-indicator unknown"></span>
-                            Unknown (Q)
-                        </button>
-                    </div>
-                    <button class="btn btn-secondary" id="loadRandomBtn">Load Random Sample</button>
-                </div>
-
-                <!-- Analyze Button -->
-                <button class="btn btn-primary" id="analyzeBtn" disabled>
-                    <span class="btn-text">Analyze Signal</span>
-                    <span class="btn-loader" hidden></span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Center Panel - Visualization -->
-        <section class="panel visualization-panel">
-            <div class="panel-header">
-                <h2>Analysis Pipeline</h2>
-                <div class="pipeline-steps">
-                    <div class="step" data-step="1">
-                        <span class="step-num">1</span>
-                        <span class="step-label">Input</span>
-                    </div>
-                    <div class="step-connector"></div>
-                    <div class="step" data-step="2">
-                        <span class="step-num">2</span>
-                        <span class="step-label">Encode</span>
-                    </div>
-                    <div class="step-connector"></div>
-                    <div class="step" data-step="3">
-                        <span class="step-num">3</span>
-                        <span class="step-label">Fuse</span>
-                    </div>
-                    <div class="step-connector"></div>
-                    <div class="step" data-step="4">
-                        <span class="step-num">4</span>
-                        <span class="step-label">Classify</span>
-                    </div>
-                    <div class="step-connector"></div>
-                    <div class="step" data-step="5">
-                        <span class="step-num">5</span>
-                        <span class="step-label">Explain</span>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-content visualization-content">
-                <!-- Placeholder State -->
-                <div class="placeholder-state" id="placeholderState">
-                    <div class="placeholder-icon">
-                        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <rect x="10" y="20" width="60" height="40" rx="4"/>
-                            <path d="M10 35H25L32 25L40 45L48 30L55 35H70"/>
-                            <circle cx="40" cy="60" r="3"/>
-                        </svg>
-                    </div>
-                    <h3>Ready for Analysis</h3>
-                    <p>Upload an ECG signal or load a sample to begin the analysis pipeline</p>
-                </div>
-
-                <!-- Results Container -->
-                <div class="results-container" id="resultsContainer" hidden>
-                    <!-- Step 1: Signal -->
-                    <div class="viz-section" id="signalSection">
-                        <div class="viz-header">
-                            <h3>Step 1: Raw ECG Signal</h3>
-                            <span class="viz-badge">187 samples</span>
-                        </div>
-                        <div class="viz-content">
-                            <img id="signalPlot" class="viz-image" alt="ECG Signal">
+                        <div class="about-feature-text">
+                            <h4>Multi-Modal Encoding</h4>
+                            <p>Combines GAF, Recurrence Plots, and Markov Transition Fields into RGB images</p>
                         </div>
                     </div>
-
-                    <!-- Step 2: Encoding -->
-                    <div class="viz-section" id="encodingSection">
-                        <div class="viz-header">
-                            <h3>Step 2: Time-Series Encoding</h3>
-                            <span class="viz-badge">GAF + RP + MTF</span>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
                         </div>
-                        <div class="viz-content">
-                            <img id="encodingPlot" class="viz-image" alt="Encoding Methods">
-                        </div>
-                        <div class="viz-description">
-                            <div class="desc-item">
-                                <strong>GAF</strong> - Gramian Angular Field captures temporal correlations
-                            </div>
-                            <div class="desc-item">
-                                <strong>RP</strong> - Recurrence Plot reveals signal dynamics
-                            </div>
-                            <div class="desc-item">
-                                <strong>MTF</strong> - Markov Transition Field encodes state transitions
-                            </div>
+                        <div class="about-feature-text">
+                            <h4>CBAM Attention Mechanism</h4>
+                            <p>Channel &amp; Spatial attention modules focus on the most relevant cardiac features</p>
                         </div>
                     </div>
-
-                    <!-- Step 3: Fusion -->
-                    <div class="viz-section" id="fusionSection">
-                        <div class="viz-header">
-                            <h3>Step 3: Channel Fusion</h3>
-                            <span class="viz-badge">3-Channel Input</span>
+                    <div class="about-feature">
+                        <div class="about-feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </div>
-                        <div class="viz-content fusion-content">
-                            <img id="fusionPlot" class="viz-image fusion-image" alt="Fused Image">
-                            <div class="fusion-legend">
-                                <div class="legend-item"><span class="legend-color red"></span>GAF Channel</div>
-                                <div class="legend-item"><span class="legend-color green"></span>RP Channel</div>
-                                <div class="legend-item"><span class="legend-color blue"></span>MTF Channel</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 4: Classification -->
-                    <div class="viz-section" id="predictionSection">
-                        <div class="viz-header">
-                            <h3>Step 4: Classification Results</h3>
-                            <span class="viz-badge">ResNet-18 + CBAM</span>
-                        </div>
-                        <div class="viz-content">
-                            <img id="predictionPlot" class="viz-image" alt="Prediction Probabilities">
-                        </div>
-                    </div>
-
-                    <!-- Step 5: Grad-CAM -->
-                    <div class="viz-section" id="gradcamSection">
-                        <div class="viz-header">
-                            <h3>Step 5: Attention Visualization (Grad-CAM)</h3>
-                            <span class="viz-badge">Explainability</span>
-                        </div>
-                        <div class="viz-content">
-                            <img id="gradcamPlot" class="viz-image" alt="Grad-CAM Visualization">
-                        </div>
-                        <div class="viz-description">
-                            <p>Grad-CAM highlights regions the model focuses on for classification. Warmer colors indicate higher attention.</p>
+                        <div class="about-feature-text">
+                            <h4>Explainable AI (Grad-CAM)</h4>
+                            <p>Visual attention maps show exactly where the model looks for each prediction</p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Right Panel - Results -->
-        <section class="panel results-panel">
-            <div class="panel-header">
-                <h2>Diagnosis Report</h2>
-            </div>
-            <div class="panel-content">
-                <!-- Waiting State -->
-                <div class="waiting-state" id="waitingState">
-                    <div class="waiting-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                        </svg>
-                    </div>
-                    <p>Awaiting analysis...</p>
-                </div>
-
-                <!-- Diagnosis Results -->
-                <div class="diagnosis-results" id="diagnosisResults" hidden>
-                    <!-- Primary Prediction -->
-                    <div class="result-card primary-result" id="primaryResult">
-                        <div class="result-label">Primary Classification</div>
-                        <div class="result-class" id="resultClass">-</div>
-                        <div class="result-confidence">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" id="confidenceFill"></div>
-                            </div>
-                            <span class="confidence-value" id="confidenceValue">0%</span>
+            <div class="about-visual reveal">
+                <div class="method-card">
+                    <h3>Encoding Pipeline Overview</h3>
+                    <div class="method-pipeline">
+                        <div class="method-step">
+                            <div class="method-step-icon ecg-icon">&#x1F4C8;</div>
+                            <span class="method-step-label">ECG</span>
+                        </div>
+                        <span class="method-arrow">&rarr;</span>
+                        <div class="method-step">
+                            <div class="method-step-icon gaf-icon">&#x1F7E1;</div>
+                            <span class="method-step-label">GAF</span>
+                        </div>
+                        <div class="method-step">
+                            <div class="method-step-icon rp-icon">&#x1F7E3;</div>
+                            <span class="method-step-label">RP</span>
+                        </div>
+                        <div class="method-step">
+                            <div class="method-step-icon mtf-icon">&#x1F535;</div>
+                            <span class="method-step-label">MTF</span>
+                        </div>
+                        <span class="method-arrow">&rarr;</span>
+                        <div class="method-step">
+                            <div class="method-step-icon fuse-icon">&#x1F500;</div>
+                            <span class="method-step-label">Fusion</span>
+                        </div>
+                        <span class="method-arrow">&rarr;</span>
+                        <div class="method-step">
+                            <div class="method-step-icon model-icon">&#x1F9E0;</div>
+                            <span class="method-step-label">ResNet</span>
                         </div>
                     </div>
-
-                    <!-- Description -->
-                    <div class="result-card">
-                        <div class="result-label">Clinical Description</div>
-                        <p class="result-description" id="resultDescription">-</p>
-                    </div>
-
-                    <!-- Probability Breakdown -->
-                    <div class="result-card">
-                        <div class="result-label">Class Probabilities</div>
-                        <div class="prob-list" id="probList"></div>
-                    </div>
-
-                    <!-- Model Info -->
-                    <div class="result-card model-info">
-                        <div class="result-label">Model Information</div>
-                        <div class="info-grid">
-                            <div class="info-item">
-                                <span class="info-key">Architecture</span>
-                                <span class="info-value">ResNet-18 + CBAM</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-key">Attention</span>
-                                <span class="info-value">Channel + Spatial</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-key">Input Size</span>
-                                <span class="info-value">64 x 64 x 3</span>
-                            </div>
-                            <div class="info-item">
-                                <span class="info-key">Classes</span>
-                                <span class="info-value">5 (MIT-BIH)</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Export -->
-                    <button class="btn btn-secondary" id="exportBtn">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
-                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
-                        </svg>
-                        Export Report
-                    </button>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <span>ECG Arrhythmia Detection System</span>
-            <span class="separator">|</span>
-            <span>MIT-BIH Dataset</span>
-            <span class="separator">|</span>
-            <span>ResNet-18 + CBAM Architecture</span>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <script src="ecg_app.js"></script>
+<!-- ======== PIPELINE ======== -->
+<section class="pipeline" id="pipeline">
+    <div class="container">
+        <div class="pipeline-header reveal">
+            <span class="section-label">How It Works</span>
+            <h2 class="section-title">Analysis Pipeline</h2>
+            <p class="section-subtitle">From raw ECG signal to classified arrhythmia in five automated steps</p>
+        </div>
+        <div class="pipeline-grid reveal">
+            <div class="pipeline-step">
+                <div class="pipeline-step-num">1</div>
+                <div class="pipeline-step-icon">&#x1F4E1;</div>
+                <h4>Signal Input</h4>
+                <p>Raw 1D ECG signal (187 samples from MIT-BIH format)</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-num">2</div>
+                <div class="pipeline-step-icon">&#x1F52C;</div>
+                <h4>Encoding</h4>
+                <p>Transform to GAF, Recurrence Plot &amp; Markov Transition Field</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-num">3</div>
+                <div class="pipeline-step-icon">&#x1F500;</div>
+                <h4>Channel Fusion</h4>
+                <p>Stack 3 encodings as RGB channels into a 64&times;64 image</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-num">4</div>
+                <div class="pipeline-step-icon">&#x1F9E0;</div>
+                <h4>Classification</h4>
+                <p>ResNet-18 + CBAM predicts one of 5 arrhythmia classes</p>
+            </div>
+            <div class="pipeline-step">
+                <div class="pipeline-step-num">5</div>
+                <div class="pipeline-step-icon">&#x1F50D;</div>
+                <h4>Explainability</h4>
+                <p>Grad-CAM generates attention heatmaps for interpretability</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== TECHNOLOGY ======== -->
+<section class="technology" id="technology">
+    <div class="container">
+        <div class="technology-header reveal">
+            <span class="section-label">Technology Stack</span>
+            <h2 class="section-title">Built with State-of-the-Art Tools</h2>
+            <p class="section-subtitle">Combining proven deep learning architectures with innovative signal processing techniques</p>
+        </div>
+        <div class="tech-grid reveal">
+            <div class="tech-card">
+                <div class="tech-card-icon blue-bg">&#x1F3D7;&#xFE0F;</div>
+                <h3>ResNet-18 Backbone</h3>
+                <p>Pre-trained on ImageNet with transfer learning. Residual connections enable deep feature extraction from encoded ECG images.</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">PyTorch</span>
+                    <span class="tech-tag">Transfer Learning</span>
+                    <span class="tech-tag">ImageNet</span>
+                </div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon violet-bg">&#x1F3AF;</div>
+                <h3>CBAM Attention</h3>
+                <p>Convolutional Block Attention Module applies both channel and spatial attention to focus on clinically relevant regions.</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">Channel Attention</span>
+                    <span class="tech-tag">Spatial Attention</span>
+                    <span class="tech-tag">Interpretable</span>
+                </div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon emerald-bg">&#x1F4CA;</div>
+                <h3>Fusion Encoding</h3>
+                <p>Three complementary time-series-to-image transforms capture temporal correlations, recurrence dynamics, and state transitions.</p>
+                <div class="tech-tags">
+                    <span class="tech-tag">GAF</span>
+                    <span class="tech-tag">Recurrence Plot</span>
+                    <span class="tech-tag">MTF</span>
+                </div>
+            </div>
+        </div>
+        <div class="perf-banner reveal">
+            <h3>Model Performance on MIT-BIH Arrhythmia Database</h3>
+            <div class="perf-metrics">
+                <div>
+                    <div class="perf-metric-value">98.35%</div>
+                    <div class="perf-metric-label">Accuracy</div>
+                </div>
+                <div>
+                    <div class="perf-metric-value">98.31%</div>
+                    <div class="perf-metric-label">Precision</div>
+                </div>
+                <div>
+                    <div class="perf-metric-value">98.35%</div>
+                    <div class="perf-metric-label">Recall</div>
+                </div>
+                <div>
+                    <div class="perf-metric-value">98.32%</div>
+                    <div class="perf-metric-label">F1-Score</div>
+                </div>
+            </div>
+            <p class="perf-note">Evaluated on 21,892 test samples &middot; 87,554 training samples &middot; 5 classes (N, S, V, F, Q)</p>
+        </div>
+    </div>
+</section>
+
+<!-- ======== CREATOR ======== -->
+<section class="creator" id="creator">
+    <div class="container">
+        <div class="pipeline-header reveal">
+            <span class="section-label">About the Creator</span>
+            <h2 class="section-title">Meet the Developer</h2>
+        </div>
+        <div class="creator-card reveal">
+            <div class="creator-avatar">&#x1F469;&#x200D;&#x1F4BB;</div>
+            <div class="creator-info">
+                <h3>Ahlam Tarik</h3>
+                <div class="creator-role">AI &amp; Deep Learning Engineer</div>
+                <p class="creator-bio">
+                    Passionate about applying artificial intelligence to healthcare challenges.
+                    This project was developed as part of my deep learning research, focusing on
+                    making cardiac arrhythmia detection more accessible and explainable through
+                    innovative signal encoding and attention mechanisms.
+                </p>
+                <div class="creator-links">
+                    <a href="https://github.com/theahlamtarik" target="_blank" class="creator-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.416 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                        GitHub
+                    </a>
+                    <a href="mailto:theahlamtarik@gmail.com" class="creator-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                        Email
+                    </a>
+                    <a href="https://linkedin.com/in/" target="_blank" class="creator-link">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== CTA ======== -->
+<section class="cta">
+    <div class="container">
+        <div class="cta-inner reveal">
+            <span class="section-label">Ready to Explore?</span>
+            <h2 class="section-title">Try the Live Analysis Demo</h2>
+            <p class="section-subtitle">Upload an ECG signal or use our built-in samples to see the full classification pipeline in action.</p>
+            <div class="cta-buttons">
+                <a href="analysis.html" class="btn-primary">
+                    Launch Demo
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer class="footer">
+    <div class="container footer-inner">
+        <div class="footer-brand">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+            CardioLens
+        </div>
+        <div class="footer-text">
+            <span>ResNet-18 + CBAM &middot; MIT-BIH Database</span>
+            <a href="https://github.com/theahlamtarik" target="_blank">GitHub</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+// Navbar scroll effect
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+// Mobile menu toggle
+document.getElementById('mobileToggle').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('mobile-open');
+});
+// Scroll reveal
+const revealElements = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+revealElements.forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>

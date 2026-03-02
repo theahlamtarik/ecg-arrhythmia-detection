@@ -322,7 +322,7 @@ async function analyzeSignal() {
 
 function setAnalyzing(analyzing) {
     const btnText = elements.analyzeBtn.querySelector('.btn-text');
-    const btnLoader = elements.analyzeBtn.querySelector('.btn-loader');
+    const btnLoader = elements.analyzeBtn.querySelector('.btn-spinner');
     
     if (analyzing) {
         elements.analyzeBtn.disabled = true;
@@ -393,7 +393,7 @@ function displayPrediction(prediction) {
     elements.resultDescription.textContent = prediction.description;
     
     // Update card styling
-    elements.primaryResult.className = 'result-card primary-result ' + CLASS_KEYS[classIdx];
+    elements.primaryResult.className = 'diagnosis-card primary ' + CLASS_KEYS[classIdx];
     
     // Update confidence bar color
     elements.confidenceFill.style.background = CLASS_COLORS[classIdx];
@@ -427,7 +427,7 @@ function displayProbabilities(probabilities) {
 }
 
 function updatePipelineSteps(activeStep) {
-    const steps = document.querySelectorAll('.pipeline-steps .step');
+    const steps = document.querySelectorAll('.pipeline-bar .pip-step');
     
     steps.forEach((step, index) => {
         const stepNum = index + 1;

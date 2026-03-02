@@ -220,7 +220,7 @@ def fig_to_base64(fig):
     """Convert matplotlib figure to base64 string"""
     buf = io.BytesIO()
     fig.savefig(buf, format='png', dpi=150, bbox_inches='tight', 
-                facecolor='#1a1a2e', edgecolor='none')
+                facecolor='#ffffff', edgecolor='none')
     buf.seek(0)
     img_str = base64.b64encode(buf.read()).decode('utf-8')
     plt.close(fig)
@@ -229,41 +229,41 @@ def fig_to_base64(fig):
 def plot_signal(signal):
     """Plot ECG signal"""
     fig, ax = plt.subplots(figsize=(12, 3))
-    ax.set_facecolor('#1a1a2e')
-    fig.patch.set_facecolor('#1a1a2e')
+    ax.set_facecolor('#ffffff')
+    fig.patch.set_facecolor('#ffffff')
     
     x = np.arange(len(signal))
-    ax.plot(x, signal, color='#00d4ff', linewidth=1.2, alpha=0.9)
-    ax.fill_between(x, signal, alpha=0.1, color='#00d4ff')
+    ax.plot(x, signal, color='#2563eb', linewidth=1.5, alpha=0.9)
+    ax.fill_between(x, signal, alpha=0.06, color='#3b82f6')
     
-    ax.set_xlabel('Sample', color='#e0e0e0', fontsize=10)
-    ax.set_ylabel('Amplitude', color='#e0e0e0', fontsize=10)
-    ax.set_title('ECG Signal Waveform', color='#ffffff', fontsize=12, fontweight='bold')
-    ax.tick_params(colors='#a0a0a0')
-    ax.grid(True, alpha=0.2, color='#404040')
+    ax.set_xlabel('Sample', color='#475569', fontsize=10)
+    ax.set_ylabel('Amplitude', color='#475569', fontsize=10)
+    ax.set_title('ECG Signal Waveform', color='#0f172a', fontsize=12, fontweight='bold')
+    ax.tick_params(colors='#64748b')
+    ax.grid(True, alpha=0.15, color='#cbd5e1')
     
     for spine in ax.spines.values():
-        spine.set_color('#404040')
+        spine.set_color('#e2e8f0')
     
     return fig_to_base64(fig)
 
 def plot_encoding(gaf_img, rp_img, mtf_img):
     """Plot encoding pipeline"""
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-    fig.patch.set_facecolor('#1a1a2e')
+    fig.patch.set_facecolor('#ffffff')
     
     titles = ['Gramian Angular Field (GAF)', 'Recurrence Plot (RP)', 'Markov Transition Field (MTF)']
     images = [gaf_img, rp_img, mtf_img]
     cmaps = ['viridis', 'plasma', 'inferno']
     
     for ax, img, title, cmap in zip(axes, images, titles, cmaps):
-        ax.set_facecolor('#1a1a2e')
+        ax.set_facecolor('#ffffff')
         im = ax.imshow(img, cmap=cmap, aspect='auto')
-        ax.set_title(title, color='#ffffff', fontsize=11, fontweight='bold', pad=10)
+        ax.set_title(title, color='#0f172a', fontsize=11, fontweight='bold', pad=10)
         ax.set_xticks([])
         ax.set_yticks([])
         for spine in ax.spines.values():
-            spine.set_color('#404040')
+            spine.set_color('#e2e8f0')
     
     plt.tight_layout()
     return fig_to_base64(fig)
@@ -271,8 +271,8 @@ def plot_encoding(gaf_img, rp_img, mtf_img):
 def plot_fusion_image(gaf_img, rp_img, mtf_img):
     """Plot the fused 3-channel image"""
     fig, ax = plt.subplots(figsize=(5, 5))
-    fig.patch.set_facecolor('#1a1a2e')
-    ax.set_facecolor('#1a1a2e')
+    fig.patch.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
     
     # Normalize each channel
     gaf_norm = (gaf_img - gaf_img.min()) / (gaf_img.max() - gaf_img.min() + 1e-8)
@@ -283,11 +283,11 @@ def plot_fusion_image(gaf_img, rp_img, mtf_img):
     rgb_img = np.stack([gaf_norm, rp_norm, mtf_norm], axis=-1)
     
     ax.imshow(rgb_img)
-    ax.set_title('Fused 3-Channel Input', color='#ffffff', fontsize=12, fontweight='bold')
+    ax.set_title('Fused 3-Channel Input', color='#0f172a', fontsize=12, fontweight='bold')
     ax.set_xticks([])
     ax.set_yticks([])
     for spine in ax.spines.values():
-        spine.set_color('#404040')
+        spine.set_color('#e2e8f0')
     
     plt.tight_layout()
     return fig_to_base64(fig)
@@ -336,10 +336,10 @@ def compute_gradcam(model, input_tensor, target_class=None):
 def plot_gradcam(cam, gaf_img, rp_img, mtf_img):
     """Plot Grad-CAM overlay"""
     fig, axes = plt.subplots(1, 4, figsize=(16, 4))
-    fig.patch.set_facecolor('#1a1a2e')
+    fig.patch.set_facecolor('#ffffff')
     
     # Create custom colormap for heatmap
-    colors = ['#000033', '#0066ff', '#00ff00', '#ffff00', '#ff0000']
+    colors = ['#dbeafe', '#3b82f6', '#10b981', '#f59e0b', '#ef4444']
     cmap = LinearSegmentedColormap.from_list('gradcam', colors)
     
     titles = ['Attention on GAF', 'Attention on RP', 'Attention on MTF', 'Combined Attention']
@@ -347,28 +347,28 @@ def plot_gradcam(cam, gaf_img, rp_img, mtf_img):
     base_cmaps = ['viridis', 'plasma', 'inferno']
     
     for i, (ax, img, title, base_cmap) in enumerate(zip(axes[:3], images, titles[:3], base_cmaps)):
-        ax.set_facecolor('#1a1a2e')
+        ax.set_facecolor('#ffffff')
         ax.imshow(img, cmap=base_cmap, alpha=0.7)
         ax.imshow(cam, cmap=cmap, alpha=0.5)
-        ax.set_title(title, color='#ffffff', fontsize=11, fontweight='bold')
+        ax.set_title(title, color='#0f172a', fontsize=11, fontweight='bold')
         ax.set_xticks([])
         ax.set_yticks([])
         for spine in ax.spines.values():
-            spine.set_color('#404040')
+            spine.set_color('#e2e8f0')
     
     # Combined view
-    axes[3].set_facecolor('#1a1a2e')
+    axes[3].set_facecolor('#ffffff')
     im = axes[3].imshow(cam, cmap=cmap)
-    axes[3].set_title(titles[3], color='#ffffff', fontsize=11, fontweight='bold')
+    axes[3].set_title(titles[3], color='#0f172a', fontsize=11, fontweight='bold')
     axes[3].set_xticks([])
     axes[3].set_yticks([])
     for spine in axes[3].spines.values():
-        spine.set_color('#404040')
+        spine.set_color('#e2e8f0')
     
     # Add colorbar
     cbar = plt.colorbar(im, ax=axes[3], fraction=0.046, pad=0.04)
-    cbar.ax.tick_params(colors='#a0a0a0')
-    cbar.set_label('Attention Intensity', color='#e0e0e0')
+    cbar.ax.tick_params(colors='#64748b')
+    cbar.set_label('Attention Intensity', color='#475569')
     
     plt.tight_layout()
     return fig_to_base64(fig)
@@ -376,28 +376,28 @@ def plot_gradcam(cam, gaf_img, rp_img, mtf_img):
 def plot_prediction_chart(probabilities):
     """Plot prediction probabilities"""
     fig, ax = plt.subplots(figsize=(10, 4))
-    fig.patch.set_facecolor('#1a1a2e')
-    ax.set_facecolor('#1a1a2e')
+    fig.patch.set_facecolor('#ffffff')
+    ax.set_facecolor('#ffffff')
     
     y_pos = np.arange(len(CLASS_NAMES))
-    bars = ax.barh(y_pos, probabilities * 100, color=CLASS_COLORS, edgecolor='#ffffff', linewidth=0.5)
+    bars = ax.barh(y_pos, probabilities * 100, color=CLASS_COLORS, edgecolor='#ffffff', linewidth=0.5, height=0.6)
     
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(CLASS_NAMES, color='#e0e0e0', fontsize=10)
-    ax.set_xlabel('Confidence (%)', color='#e0e0e0', fontsize=10)
-    ax.set_title('Classification Probabilities', color='#ffffff', fontsize=12, fontweight='bold')
+    ax.set_yticklabels(CLASS_NAMES, color='#334155', fontsize=10)
+    ax.set_xlabel('Confidence (%)', color='#475569', fontsize=10)
+    ax.set_title('Classification Probabilities', color='#0f172a', fontsize=12, fontweight='bold')
     ax.set_xlim(0, 100)
-    ax.tick_params(colors='#a0a0a0')
-    ax.grid(True, axis='x', alpha=0.2, color='#404040')
+    ax.tick_params(colors='#64748b')
+    ax.grid(True, axis='x', alpha=0.15, color='#cbd5e1')
     
     for spine in ax.spines.values():
-        spine.set_color('#404040')
+        spine.set_color('#e2e8f0')
     
     # Add percentage labels
     for bar, prob in zip(bars, probabilities):
         width = bar.get_width()
         ax.text(width + 1, bar.get_y() + bar.get_height()/2, 
-                f'{prob*100:.1f}%', va='center', color='#e0e0e0', fontsize=9)
+                f'{prob*100:.1f}%', va='center', color='#475569', fontsize=9)
     
     plt.tight_layout()
     return fig_to_base64(fig)
@@ -456,6 +456,10 @@ def load_model():
 @app.route('/')
 def serve_index():
     return send_from_directory(app.static_folder, 'ecg_interface.html')
+
+@app.route('/analysis')
+def serve_analysis():
+    return send_from_directory(app.static_folder, 'analysis.html')
 
 @app.route('/api/health')
 def health_check():
