@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Stress Detection Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="bg-animation">
+        <div class="bg-gradient"></div>
+        <div class="bg-particles" id="particles"></div>
+    </div>
+
+    <!-- Main container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                <div class="logo-text">
+                    <h1>Stress Detection</h1>
+                    <span class="subtitle">CNN-based Physiological Signal Analysis</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-tab="overview">Overview</button>
+                <button class="nav-btn" data-tab="models">Models</button>
+                <button class="nav-btn" data-tab="results">Results</button>
+                <button class="nav-btn" data-tab="visualize">Visualize</button>
+            </nav>
+        </header>
+
+        <!-- Tab Content -->
+        <main class="main-content">
+            <!-- Overview Tab -->
+            <section id="overview" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card glass">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-value" id="subjectCount">15</div>
+                        <div class="stat-label">Subjects</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value">95.8%</div>
+                        <div class="stat-label">Best Accuracy</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value">14</div>
+                        <div class="stat-label">Signal Channels</div>
+                    </div>
+                    <div class="stat-card glass">
+                        <div class="stat-icon">🧬</div>
+                        <div class="stat-value">6</div>
+                        <div class="stat-label">Model Architectures</div>
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card glass">
+                        <h2>About the Project</h2>
+                        <p>This project compares time-series encoding methods for stress detection using CNN architectures. We encode physiological signals (ECG, EDA, EMG, etc.) from the WESAD dataset into images using:</p>
+                        <ul class="feature-list">
+                            <li><span class="tag tag-blue">GAF</span> Gramian Angular Field</li>
+                            <li><span class="tag tag-purple">MTF</span> Markov Transition Field</li>
+                            <li><span class="tag tag-green">RP</span> Recurrence Plot</li>
+                        </ul>
+                    </div>
+
+                    <div class="card glass">
+                        <h2>Key Features</h2>
+                        <ul class="feature-list">
+                            <li>✨ Channel Attention (CBAM/SE) for interpretability</li>
+                            <li>✨ Leave-One-Subject-Out cross-validation</li>
+                            <li>✨ EfficientNet for efficient inference</li>
+                            <li>✨ Grad-CAM visualization</li>
+                            <li>✨ Comprehensive metrics (AUC, F1, etc.)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card glass wide">
+                    <h2>Physiological Signals</h2>
+                    <div class="signals-grid" id="signalsGrid">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Models Tab -->
+            <section id="models" class="tab-content">
+                <h2 class="section-title">Available Architectures</h2>
+                <div class="models-grid" id="modelsGrid">
+                    <!-- Will be populated by JS -->
+                </div>
+
+                <h2 class="section-title">Encoding Methods</h2>
+                <div class="encoding-grid" id="encodingGrid">
+                    <!-- Will be populated by JS -->
+                </div>
+            </section>
+
+            <!-- Results Tab -->
+            <section id="results" class="tab-content">
+                <h2 class="section-title">LOSO Cross-Validation Results</h2>
+                <div class="results-container glass" id="resultsContainer">
+                    <p class="placeholder-text">Run experiments to see results here...</p>
+                    <div class="results-table" id="resultsTable" style="display: none;">
+                        <!-- Will be populated by JS -->
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card glass">
+                        <h2>Run New Experiment</h2>
+                        <form id="experimentForm" class="experiment-form">
+                            <div class="form-group">
+                                <label>Model</label>
+                                <select id="modelSelect" class="select-modern">
+                                    <option value="attention">Attention CNN (CBAM)</option>
+                                    <option value="attention_se">Attention CNN (SE)</option>
+                                    <option value="efficientnet">EfficientNet-B0</option>
+                                    <option value="resnet">ResNet-18</option>
+                                    <option value="custom">Custom CNN</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Encoding Method</label>
+                                <select id="encodingSelect" class="select-modern">
+                                    <option value="gaf_summation">GAF Summation</option>
+                                    <option value="gaf_difference">GAF Difference</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Epochs</label>
+                                <input type="number" id="epochsInput" value="50" min="1" max="200" class="input-modern">
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <span>🚀</span> Generate Command
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card glass">
+                        <h2>Command</h2>
+                        <div class="command-box" id="commandBox">
+                            <code>python loso_trainer.py --model attention --method gaf_summation --epochs 50</code>
+                        </div>
+                        <button class="btn-secondary" onclick="copyCommand()">
+                            <span>📋</span> Copy to Clipboard
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Visualize Tab -->
+            <section id="visualize" class="tab-content">
+                <h2 class="section-title">Grad-CAM Visualizations</h2>
+                <div class="viz-container" id="gradcamContainer">
+                    <p class="placeholder-text">No visualizations available yet. Run training with the --gradcam flag to generate them.</p>
+                </div>
+
+                <div class="card glass wide">
+                    <h2>Channel Importance</h2>
+                    <p>After training with attention models, view which physiological signals contribute most to stress detection.</p>
+                    <div class="channel-importance" id="channelImportance">
+                        <div class="channel-bar">
+                            <span class="channel-name">chest_ecg</span>
+                            <div class="bar-container"><div class="bar" style="width: 95%"></div></div>
+                            <span class="bar-value">0.95</span>
+                        </div>
+                        <div class="channel-bar">
+                            <span class="channel-name">chest_eda</span>
+                            <div class="bar-container"><div class="bar" style="width: 88%"></div></div>
+                            <span class="bar-value">0.88</span>
+                        </div>
+                        <div class="channel-bar">
+                            <span class="channel-name">wrist_eda</span>
+                            <div class="bar-container"><div class="bar" style="width: 82%"></div></div>
+                            <span class="bar-value">0.82</span>
+                        </div>
+                        <div class="channel-bar">
+                            <span class="channel-name">chest_resp</span>
+                            <div class="bar-container"><div class="bar" style="width: 75%"></div></div>
+                            <span class="bar-value">0.75</span>
+                        </div>
+                        <div class="channel-bar">
+                            <span class="channel-name">wrist_bvp</span>
+                            <div class="bar-container"><div class="bar" style="width: 70%"></div></div>
+                            <span class="bar-value">0.70</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer glass">
+            <p>Encoding Methods Comparison for Stress Detection - CNN Course Project</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

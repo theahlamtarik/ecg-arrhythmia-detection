@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalAura - AI-Powered Cardiac Monitoring</title>
+    <meta name="description"
+        content="Advanced AI-powered wearable health monitoring for real-time arrhythmia detection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="vitalaura.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4C12 4 8 8 8 12C8 16 12 20 16 28C20 20 24 16 24 12C24 8 20 4 16 4Z"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M10 14L14 14L16 10L18 18L20 14L22 14" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <span>VitalAura</span>
+            </a>
+            <div class="nav-links">
+                <a href="#demo">Demo</a>
+                <a href="#technology">Technology</a>
+                <a href="#features">Features</a>
+                <a href="#use-cases">Use Cases</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">AI-Powered Health Monitoring</div>
+            <h1>Intelligent <span class="gradient-text">Cardiac Monitoring</span><br>for Everyone</h1>
+            <p class="hero-subtitle">Advanced deep learning algorithms detect cardiac arrhythmias in real-time from
+                wearable devices with clinical-grade accuracy.</p>
+
+            <a href="#demo" class="cta-button">
+                Try Live Demo
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+            </a>
+
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value" data-target="98.35">98.35%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value">5</span>
+                    <span class="stat-label">Arrhythmia Classes</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat">
+                    <span class="stat-value">&lt;100ms</span>
+                    <span class="stat-label">Inference Time</span>
+                </div>
+            </div>
+
+            <div class="device-compatibility">
+                <span class="compat-label">Compatible with leading wearables</span>
+                <div class="compat-devices">
+                    <span class="device-badge">Apple Watch</span>
+                    <span class="device-badge">Fitbit</span>
+                    <span class="device-badge">Garmin</span>
+                    <span class="device-badge">Samsung Galaxy</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="ecg-display">
+                <div class="ecg-header">
+                    <span class="ecg-status">Live ECG</span>
+                    <span class="ecg-rate" id="heartRate">72 BPM</span>
+                </div>
+                <svg class="ecg-wave" viewBox="0 0 400 100" preserveAspectRatio="none">
+                    <path class="ecg-line" id="ecgPath"
+                        d="M0,50 L50,50 L60,50 L70,30 L80,50 L90,50 L100,50 L110,20 L115,80 L120,40 L130,50 L200,50 L210,50 L220,30 L230,50 L240,50 L250,50 L260,20 L265,80 L270,40 L280,50 L350,50 L360,50 L370,30 L380,50 L390,50 L400,50" />
+                </svg>
+                <div class="ecg-classification">
+                    <span class="classification-label">Classification</span>
+                    <span class="classification-result normal" id="classResult">Normal Sinus Rhythm</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Model Demo Section -->
+    <section class="demo-section" id="demo">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Model Demonstration</h2>
+                <p>Our ResNet-18 model with CBAM attention and Fusion Encoding classifies ECG heartbeats into 5
+                    clinically relevant categories</p>
+            </div>
+
+            <div class="demo-grid">
+                <div class="demo-input">
+                    <h3>Input Signal</h3>
+                    <div class="sample-selector">
+                        <label>Select sample heartbeat:</label>
+                        <select id="sampleSelect">
+                            <option value="normal">Normal (N)</option>
+                            <option value="supra">Supraventricular (S)</option>
+                            <option value="vent">Ventricular (V)</option>
+                            <option value="fusion">Fusion (F)</option>
+                            <option value="unknown">Unknown (Q)</option>
+                        </select>
+                    </div>
+                    <div class="signal-preview" id="signalPreview">
+                        <svg viewBox="0 0 200 80" class="sample-signal">
+                            <path
+                                d="M0,40 L20,40 L30,40 L35,20 L40,40 L50,40 L55,40 L60,10 L65,70 L70,35 L80,40 L100,40 L110,40 L115,20 L120,40 L130,40 L135,40 L140,10 L145,70 L150,35 L160,40 L200,40"
+                                stroke="#3b82f6" stroke-width="2" fill="none" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="demo-process">
+                    <h3>Fusion Encoding</h3>
+                    <div class="encoding-preview">
+                        <div class="encoding-channel">
+                            <div class="channel-box red"></div>
+                            <span>GAF</span>
+                        </div>
+                        <div class="encoding-plus">+</div>
+                        <div class="encoding-channel">
+                            <div class="channel-box green"></div>
+                            <span>RP</span>
+                        </div>
+                        <div class="encoding-plus">+</div>
+                        <div class="encoding-channel">
+                            <div class="channel-box blue"></div>
+                            <span>MTF</span>
+                        </div>
+                        <div class="encoding-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div class="encoding-channel">
+                            <div class="channel-box fusion"></div>
+                            <span>RGB</span>
+                        </div>
+                    </div>
+
+                    <!-- AI Classification Button -->
+                    <div class="ai-classify-section" style="margin-top: 1.5rem; text-align: center;">
+                        <button id="classifyBtn" class="classify-btn" style="
+                            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+                            color: white;
+                            border: none;
+                            padding: 1rem 2rem;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            border-radius: 12px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+                        ">
+                            🧠 Classify with AI
+                        </button>
+                        <div id="apiStatus" style="
+                            margin-top: 0.75rem;
+                            font-size: 0.85rem;
+                            color: var(--text-secondary);
+                        ">
+                            Checking API status...
+                        </div>
+                    </div>
+                </div>
+
+                <div class="demo-output">
+                    <h3>Classification</h3>
+                    <div class="results-card">
+                        <div class="result-primary">
+                            <span class="result-class" id="resultClass">Normal (N)</span>
+                            <span class="result-confidence" id="resultConfidence">98.7%</span>
+                        </div>
+                        <div class="confidence-bars" id="confidenceBars">
+                            <div class="bar-row">
+                                <span class="bar-label">N</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 98.7%" data-class="normal"></div>
+                                </div>
+                                <span class="bar-value">98.7%</span>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">S</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 0.8%"></div>
+                                </div>
+                                <span class="bar-value">0.8%</span>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">V</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 0.3%"></div>
+                                </div>
+                                <span class="bar-value">0.3%</span>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">F</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 0.1%"></div>
+                                </div>
+                                <span class="bar-value">0.1%</span>
+                            </div>
+                            <div class="bar-row">
+                                <span class="bar-label">Q</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" style="width: 0.1%"></div>
+                                </div>
+                                <span class="bar-value">0.1%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section class="tech-section" id="technology">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Technology</h2>
+                <p>State-of-the-art deep learning pipeline for cardiac signal analysis</p>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 4h16v16H4z" />
+                            <path d="M4 12h16M12 4v16" />
+                        </svg>
+                    </div>
+                    <h3>Fusion Encoding</h3>
+                    <p>Combines GAF, Recurrence Plot, and MTF into RGB images, capturing temporal and transition
+                        patterns.</p>
+                    <ul class="tech-specs">
+                        <li>64x64 pixel resolution</li>
+                        <li>3-channel RGB encoding</li>
+                        <li>Multi-modal information fusion</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="3" />
+                            <path
+                                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                        </svg>
+                    </div>
+                    <h3>CBAM Attention</h3>
+                    <p>Channel and Spatial attention for interpretable predictions, focusing on clinically relevant
+                        features.</p>
+                    <ul class="tech-specs">
+                        <li>Channel Attention (What)</li>
+                        <li>Spatial Attention (Where)</li>
+                        <li>Grad-CAM visualization</li>
+                    </ul>
+                </div>
+
+                <div class="tech-card">
+                    <div class="tech-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path d="M12 8v4l2.5 2.5" />
+                        </svg>
+                    </div>
+                    <h3>Real-Time Inference</h3>
+                    <p>Optimized for edge deployment on mobile and wearable devices with minimal latency.</p>
+                    <ul class="tech-specs">
+                        <li>Sub-100ms inference</li>
+                        <li>Edge-optimized model</li>
+                        <li>Low power consumption</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="performance-summary">
+                <h3>Model Performance</h3>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="metric-value">98.35%</span>
+                        <span class="metric-label">Accuracy</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">98.31%</span>
+                        <span class="metric-label">Precision</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">98.35%</span>
+                        <span class="metric-label">Recall</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">98.32%</span>
+                        <span class="metric-label">F1-Score</span>
+                    </div>
+                </div>
+                <p class="metrics-note">MIT-BIH Arrhythmia Database: 87,554 training samples, 21,892 test samples</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Features</h2>
+                <p>Comprehensive cardiac monitoring for modern wearables</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                            </svg>
+                        </div>
+                        <h3>Arrhythmia Detection</h3>
+                    </div>
+                    <p>5-class classification: Normal, Supraventricular, Ventricular, Fusion, and Unknown. Instant
+                        alerts for dangerous rhythms with explainable AI.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                            </svg>
+                        </div>
+                        <h3>Stress Monitoring</h3>
+                    </div>
+                    <p>HRV-based stress detection using advanced signal processing to distinguish baseline and stress
+                        states from physiological markers.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="2" y="3" width="20" height="14" rx="2" />
+                                <path d="M8 21h8M12 17v4" />
+                            </svg>
+                        </div>
+                        <h3>Health Dashboard</h3>
+                    </div>
+                    <p>Live heart rhythm visualization, weekly and monthly reports, and comprehensive health analytics
+                        accessible from any device.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-header">
+                        <div class="feature-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <path d="M14 2v6h6M16 13H8M16 17H8" />
+                            </svg>
+                        </div>
+                        <h3>Clinical Reports</h3>
+                    </div>
+                    <p>Export detailed cardiac reports for healthcare providers with Grad-CAM visualizations explaining
+                        model predictions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="usecases-section" id="use-cases">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Use Cases</h2>
+                <p>Designed for multiple healthcare scenarios</p>
+            </div>
+
+            <div class="usecases-grid">
+                <div class="usecase-card">
+                    <div class="usecase-image consumer"></div>
+                    <div class="usecase-content">
+                        <span class="usecase-tag">Consumer</span>
+                        <h3>Personal Health Tracking</h3>
+                        <p>Continuous cardiac monitoring for health-conscious individuals. Receive instant alerts and
+                            track heart health trends over time.</p>
+                    </div>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-image clinical"></div>
+                    <div class="usecase-content">
+                        <span class="usecase-tag">Clinical</span>
+                        <h3>Healthcare Professionals</h3>
+                        <p>Clinical-grade insights for cardiologists. Review patient data, analyze arrhythmia patterns,
+                            and make informed decisions.</p>
+                    </div>
+                </div>
+
+                <div class="usecase-card">
+                    <div class="usecase-image enterprise"></div>
+                    <div class="usecase-content">
+                        <span class="usecase-tag">Enterprise</span>
+                        <h3>Medical Device Integration</h3>
+                        <p>API integration for medical device manufacturers. Embed VitalAura's AI engine into certified
+                            medical devices.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 4C12 4 8 8 8 12C8 16 12 20 16 28C20 20 24 16 24 12C24 8 20 4 16 4Z"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M10 14L14 14L16 10L18 18L20 14L22 14" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>VitalAura</span>
+                </div>
+                <p>AI-Powered Cardiac Monitoring</p>
+            </div>
+            <div class="footer-info">
+                <p>CNN Course Project - ECG Arrhythmia Classification</p>
+                <p>ResNet-18 + CBAM + Fusion Encoding</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="vitalaura.js"></script>
+</body>
+
+</html>

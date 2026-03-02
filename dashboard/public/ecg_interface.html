@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECG Arrhythmia Detection | CBAM-ResNet Analysis System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ecg_styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 20H10L14 8L20 32L26 14L30 20H36" stroke="url(#ecg-gradient)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="ecg-gradient" x1="4" y1="20" x2="36" y2="20">
+                                <stop stop-color="#00d4ff"/>
+                                <stop offset="1" stop-color="#0099ff"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>ECG Analysis System</h1>
+                    <span class="subtitle">CBAM-ResNet18 Deep Learning Model</span>
+                </div>
+            </div>
+            <div class="header-status">
+                <div class="status-indicator" id="modelStatus">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Checking...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Left Panel - Input -->
+        <section class="panel input-panel">
+            <div class="panel-header">
+                <h2>Signal Input</h2>
+            </div>
+            <div class="panel-content">
+                <!-- Upload Section -->
+                <div class="input-section">
+                    <h3>Upload ECG Data</h3>
+                    <div class="upload-zone" id="uploadZone">
+                        <div class="upload-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                            </svg>
+                        </div>
+                        <p class="upload-text">Drop CSV file here or click to browse</p>
+                        <p class="upload-hint">Accepts 1D ECG signal (187 samples)</p>
+                        <input type="file" id="fileInput" accept=".csv,.txt" hidden>
+                    </div>
+                </div>
+
+                <!-- Manual Input -->
+                <div class="input-section">
+                    <h3>Manual Input</h3>
+                    <textarea id="signalInput" class="signal-textarea" placeholder="Enter comma-separated values or paste signal data..."></textarea>
+                </div>
+
+                <!-- Sample Loader -->
+                <div class="input-section">
+                    <h3>Test Samples</h3>
+                    <div class="sample-grid" id="sampleGrid">
+                        <button class="sample-btn" data-class="0">
+                            <span class="sample-indicator normal"></span>
+                            Normal (N)
+                        </button>
+                        <button class="sample-btn" data-class="1">
+                            <span class="sample-indicator supra"></span>
+                            Supra (S)
+                        </button>
+                        <button class="sample-btn" data-class="2">
+                            <span class="sample-indicator vent"></span>
+                            Vent (V)
+                        </button>
+                        <button class="sample-btn" data-class="3">
+                            <span class="sample-indicator fusion"></span>
+                            Fusion (F)
+                        </button>
+                        <button class="sample-btn" data-class="4">
+                            <span class="sample-indicator unknown"></span>
+                            Unknown (Q)
+                        </button>
+                    </div>
+                    <button class="btn btn-secondary" id="loadRandomBtn">Load Random Sample</button>
+                </div>
+
+                <!-- Analyze Button -->
+                <button class="btn btn-primary" id="analyzeBtn" disabled>
+                    <span class="btn-text">Analyze Signal</span>
+                    <span class="btn-loader" hidden></span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Center Panel - Visualization -->
+        <section class="panel visualization-panel">
+            <div class="panel-header">
+                <h2>Analysis Pipeline</h2>
+                <div class="pipeline-steps">
+                    <div class="step" data-step="1">
+                        <span class="step-num">1</span>
+                        <span class="step-label">Input</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="2">
+                        <span class="step-num">2</span>
+                        <span class="step-label">Encode</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="3">
+                        <span class="step-num">3</span>
+                        <span class="step-label">Fuse</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="4">
+                        <span class="step-num">4</span>
+                        <span class="step-label">Classify</span>
+                    </div>
+                    <div class="step-connector"></div>
+                    <div class="step" data-step="5">
+                        <span class="step-num">5</span>
+                        <span class="step-label">Explain</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-content visualization-content">
+                <!-- Placeholder State -->
+                <div class="placeholder-state" id="placeholderState">
+                    <div class="placeholder-icon">
+                        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="10" y="20" width="60" height="40" rx="4"/>
+                            <path d="M10 35H25L32 25L40 45L48 30L55 35H70"/>
+                            <circle cx="40" cy="60" r="3"/>
+                        </svg>
+                    </div>
+                    <h3>Ready for Analysis</h3>
+                    <p>Upload an ECG signal or load a sample to begin the analysis pipeline</p>
+                </div>
+
+                <!-- Results Container -->
+                <div class="results-container" id="resultsContainer" hidden>
+                    <!-- Step 1: Signal -->
+                    <div class="viz-section" id="signalSection">
+                        <div class="viz-header">
+                            <h3>Step 1: Raw ECG Signal</h3>
+                            <span class="viz-badge">187 samples</span>
+                        </div>
+                        <div class="viz-content">
+                            <img id="signalPlot" class="viz-image" alt="ECG Signal">
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Encoding -->
+                    <div class="viz-section" id="encodingSection">
+                        <div class="viz-header">
+                            <h3>Step 2: Time-Series Encoding</h3>
+                            <span class="viz-badge">GAF + RP + MTF</span>
+                        </div>
+                        <div class="viz-content">
+                            <img id="encodingPlot" class="viz-image" alt="Encoding Methods">
+                        </div>
+                        <div class="viz-description">
+                            <div class="desc-item">
+                                <strong>GAF</strong> - Gramian Angular Field captures temporal correlations
+                            </div>
+                            <div class="desc-item">
+                                <strong>RP</strong> - Recurrence Plot reveals signal dynamics
+                            </div>
+                            <div class="desc-item">
+                                <strong>MTF</strong> - Markov Transition Field encodes state transitions
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Fusion -->
+                    <div class="viz-section" id="fusionSection">
+                        <div class="viz-header">
+                            <h3>Step 3: Channel Fusion</h3>
+                            <span class="viz-badge">3-Channel Input</span>
+                        </div>
+                        <div class="viz-content fusion-content">
+                            <img id="fusionPlot" class="viz-image fusion-image" alt="Fused Image">
+                            <div class="fusion-legend">
+                                <div class="legend-item"><span class="legend-color red"></span>GAF Channel</div>
+                                <div class="legend-item"><span class="legend-color green"></span>RP Channel</div>
+                                <div class="legend-item"><span class="legend-color blue"></span>MTF Channel</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Classification -->
+                    <div class="viz-section" id="predictionSection">
+                        <div class="viz-header">
+                            <h3>Step 4: Classification Results</h3>
+                            <span class="viz-badge">ResNet-18 + CBAM</span>
+                        </div>
+                        <div class="viz-content">
+                            <img id="predictionPlot" class="viz-image" alt="Prediction Probabilities">
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Grad-CAM -->
+                    <div class="viz-section" id="gradcamSection">
+                        <div class="viz-header">
+                            <h3>Step 5: Attention Visualization (Grad-CAM)</h3>
+                            <span class="viz-badge">Explainability</span>
+                        </div>
+                        <div class="viz-content">
+                            <img id="gradcamPlot" class="viz-image" alt="Grad-CAM Visualization">
+                        </div>
+                        <div class="viz-description">
+                            <p>Grad-CAM highlights regions the model focuses on for classification. Warmer colors indicate higher attention.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Panel - Results -->
+        <section class="panel results-panel">
+            <div class="panel-header">
+                <h2>Diagnosis Report</h2>
+            </div>
+            <div class="panel-content">
+                <!-- Waiting State -->
+                <div class="waiting-state" id="waitingState">
+                    <div class="waiting-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <p>Awaiting analysis...</p>
+                </div>
+
+                <!-- Diagnosis Results -->
+                <div class="diagnosis-results" id="diagnosisResults" hidden>
+                    <!-- Primary Prediction -->
+                    <div class="result-card primary-result" id="primaryResult">
+                        <div class="result-label">Primary Classification</div>
+                        <div class="result-class" id="resultClass">-</div>
+                        <div class="result-confidence">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" id="confidenceFill"></div>
+                            </div>
+                            <span class="confidence-value" id="confidenceValue">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="result-card">
+                        <div class="result-label">Clinical Description</div>
+                        <p class="result-description" id="resultDescription">-</p>
+                    </div>
+
+                    <!-- Probability Breakdown -->
+                    <div class="result-card">
+                        <div class="result-label">Class Probabilities</div>
+                        <div class="prob-list" id="probList"></div>
+                    </div>
+
+                    <!-- Model Info -->
+                    <div class="result-card model-info">
+                        <div class="result-label">Model Information</div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-key">Architecture</span>
+                                <span class="info-value">ResNet-18 + CBAM</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-key">Attention</span>
+                                <span class="info-value">Channel + Spatial</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-key">Input Size</span>
+                                <span class="info-value">64 x 64 x 3</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-key">Classes</span>
+                                <span class="info-value">5 (MIT-BIH)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Export -->
+                    <button class="btn btn-secondary" id="exportBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                        </svg>
+                        Export Report
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>ECG Arrhythmia Detection System</span>
+            <span class="separator">|</span>
+            <span>MIT-BIH Dataset</span>
+            <span class="separator">|</span>
+            <span>ResNet-18 + CBAM Architecture</span>
+        </div>
+    </footer>
+
+    <script src="ecg_app.js"></script>
+</body>
+</html>
