@@ -3,69 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VitalAura &middot; Analysis</title>
+    <title>CardioLens — ECG Analysis</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,450;14..32,500;14..32,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="analysis.css">
 </head>
 <body>
 
+<!-- ======== TOP BAR ======== -->
 <header class="topbar">
     <div class="topbar-inner">
-        <a href="/" class="topbar-brand">
-            <span class="topbar-wordmark">VitalAura</span>
-            <span class="topbar-sep"></span>
-            <span class="topbar-label">Analysis</span>
+        <a href="ecg_interface.html" class="topbar-brand">
+            <div class="topbar-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 12h4l3-9 4 18 3-9h4"/>
+                </svg>
+            </div>
+            <span class="topbar-name">CardioLens</span>
+            <span class="topbar-divider"></span>
+            <span class="topbar-page">Analysis</span>
         </a>
+
         <div class="topbar-right">
             <div class="status-chip" id="modelStatus">
                 <span class="status-dot"></span>
-                <span class="status-text">Connecting</span>
+                <span class="status-text">Connecting...</span>
             </div>
-            <a href="/" class="topbar-link">Home</a>
+            <a href="ecg_interface.html" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Home
+            </a>
         </div>
     </div>
 </header>
 
-<main class="layout">
+<!-- ======== MAIN ======== -->
+<main class="app-layout">
 
-    <!-- Left: Input -->
+    <!-- ---- LEFT: Input Panel ---- -->
     <aside class="sidebar">
-        <div class="sb-group">
-            <h3 class="sb-heading">Upload</h3>
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                Upload ECG
+            </h3>
             <div class="upload-zone" id="uploadZone">
-                <p class="uz-main">Drop a CSV file here</p>
-                <p class="uz-sub">or <span class="uz-browse">browse</span> your files</p>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="upload-icon-svg">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <path d="M17 8l-5-5-5 5"/>
+                    <path d="M12 3v12"/>
+                </svg>
+                <p class="upload-main-text">Drop CSV here or <span class="upload-link">browse</span></p>
+                <p class="upload-sub-text">1D ECG signal &middot; 187 samples</p>
                 <input type="file" id="fileInput" accept=".csv,.txt" hidden>
             </div>
         </div>
 
-        <div class="sb-group">
-            <h3 class="sb-heading">Manual Input</h3>
-            <textarea id="signalInput" class="signal-input" placeholder="Paste comma-separated values"></textarea>
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                Manual Input
+            </h3>
+            <textarea id="signalInput" class="signal-input" placeholder="Paste comma-separated signal values..."></textarea>
         </div>
 
-        <div class="sb-group">
-            <h3 class="sb-heading">Test Samples</h3>
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Test Samples
+            </h3>
             <div class="sample-buttons" id="sampleGrid">
                 <button class="sample-btn normal" data-class="0"><span class="sample-dot"></span>Normal</button>
-                <button class="sample-btn supra" data-class="1"><span class="sample-dot"></span>Supraventricular</button>
-                <button class="sample-btn vent" data-class="2"><span class="sample-dot"></span>Ventricular</button>
+                <button class="sample-btn supra" data-class="1"><span class="sample-dot"></span>Supra</button>
+                <button class="sample-btn vent" data-class="2"><span class="sample-dot"></span>Vent</button>
                 <button class="sample-btn fusion" data-class="3"><span class="sample-dot"></span>Fusion</button>
                 <button class="sample-btn unknown" data-class="4"><span class="sample-dot"></span>Unknown</button>
             </div>
-            <button class="btn-ghost" id="loadRandomBtn">Load random sample</button>
+            <button class="btn-ghost" id="loadRandomBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Load Random Sample
+            </button>
         </div>
 
         <button class="btn-analyze" id="analyzeBtn" disabled>
-            <span class="btn-text">Analyze signal</span>
+            <span class="btn-text">Analyze Signal</span>
             <span class="btn-spinner" hidden></span>
         </button>
     </aside>
 
-    <!-- Center: Visualization -->
-    <section class="center">
+    <!-- ---- CENTER: Visualization ---- -->
+    <section class="main-panel">
+        <!-- Pipeline Steps Indicator -->
         <div class="pipeline-bar">
             <div class="pip-step" data-step="1"><span class="pip-num">1</span><span class="pip-label">Input</span></div>
             <div class="pip-line"></div>
@@ -78,73 +107,129 @@
             <div class="pip-step" data-step="5"><span class="pip-num">5</span><span class="pip-label">Explain</span></div>
         </div>
 
+        <!-- Empty State -->
         <div class="empty-state" id="placeholderState">
-            <h3>Waiting for input</h3>
-            <p>Upload a signal, paste values, or choose a test sample to begin the analysis pipeline.</p>
+            <div class="empty-icon">
+                <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="8" y="16" width="48" height="32" rx="4"/>
+                    <path d="M8 30h10l6-10 8 20 6-10h10"/>
+                </svg>
+            </div>
+            <h3>Ready for Analysis</h3>
+            <p>Upload an ECG signal or select a test sample to begin the classification pipeline.</p>
         </div>
 
-        <div class="viz-stream" id="resultsContainer" hidden>
-            <div class="viz-card">
-                <div class="viz-head"><h3>Raw Signal</h3><span class="viz-tag">Step 1</span></div>
-                <div class="viz-body"><img id="signalPlot" class="viz-img" alt="ECG Signal"></div>
+        <!-- Results -->
+        <div class="viz-results" id="resultsContainer" hidden>
+            <div class="viz-card" id="signalSection">
+                <div class="viz-card-head">
+                    <h3>Step 1 &mdash; Raw ECG Signal</h3>
+                    <span class="viz-tag">187 samples</span>
+                </div>
+                <div class="viz-card-body"><img id="signalPlot" class="viz-img" alt="ECG Signal"></div>
             </div>
-            <div class="viz-card">
-                <div class="viz-head"><h3>Time-Series Encoding</h3><span class="viz-tag">Step 2</span></div>
-                <div class="viz-body"><img id="encodingPlot" class="viz-img" alt="Encoding"></div>
+
+            <div class="viz-card" id="encodingSection">
+                <div class="viz-card-head">
+                    <h3>Step 2 &mdash; Time-Series Encoding</h3>
+                    <span class="viz-tag">GAF + RP + MTF</span>
+                </div>
+                <div class="viz-card-body"><img id="encodingPlot" class="viz-img" alt="Encoding"></div>
+                <div class="viz-card-footer">
+                    <span><strong>GAF</strong> Temporal correlations</span>
+                    <span><strong>RP</strong> Signal dynamics</span>
+                    <span><strong>MTF</strong> State transitions</span>
+                </div>
             </div>
-            <div class="viz-card">
-                <div class="viz-head"><h3>Channel Fusion</h3><span class="viz-tag">Step 3</span></div>
-                <div class="viz-body"><img id="fusionPlot" class="viz-img" alt="Fused Image"></div>
+
+            <div class="viz-card" id="fusionSection">
+                <div class="viz-card-head">
+                    <h3>Step 3 &mdash; Channel Fusion</h3>
+                    <span class="viz-tag">3-Channel RGB</span>
+                </div>
+                <div class="viz-card-body fusion-layout">
+                    <img id="fusionPlot" class="viz-img fusion-img" alt="Fused Image">
+                    <div class="fusion-legend">
+                        <div class="legend-row"><span class="legend-swatch red"></span>GAF</div>
+                        <div class="legend-row"><span class="legend-swatch green"></span>RP</div>
+                        <div class="legend-row"><span class="legend-swatch blue"></span>MTF</div>
+                    </div>
+                </div>
             </div>
-            <div class="viz-card">
-                <div class="viz-head"><h3>Classification</h3><span class="viz-tag">Step 4</span></div>
-                <div class="viz-body"><img id="predictionPlot" class="viz-img" alt="Prediction"></div>
+
+            <div class="viz-card" id="predictionSection">
+                <div class="viz-card-head">
+                    <h3>Step 4 &mdash; Classification</h3>
+                    <span class="viz-tag">ResNet-18 + CBAM</span>
+                </div>
+                <div class="viz-card-body"><img id="predictionPlot" class="viz-img" alt="Prediction"></div>
             </div>
-            <div class="viz-card">
-                <div class="viz-head"><h3>Attention Map</h3><span class="viz-tag">Step 5</span></div>
-                <div class="viz-body"><img id="gradcamPlot" class="viz-img" alt="Grad-CAM"></div>
+
+            <div class="viz-card" id="gradcamSection">
+                <div class="viz-card-head">
+                    <h3>Step 5 &mdash; Grad-CAM Attention</h3>
+                    <span class="viz-tag">Explainability</span>
+                </div>
+                <div class="viz-card-body"><img id="gradcamPlot" class="viz-img" alt="Grad-CAM"></div>
+                <div class="viz-card-footer">
+                    <span>Warmer colors = higher model attention</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Right: Report -->
-    <aside class="report">
-        <h3 class="report-title">Diagnosis</h3>
+    <!-- ---- RIGHT: Results ---- -->
+    <aside class="results-sidebar">
+        <h3 class="results-title">Diagnosis Report</h3>
 
-        <div class="report-empty" id="waitingState">
-            <p>Awaiting analysis</p>
+        <!-- Waiting -->
+        <div class="results-empty" id="waitingState">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+            </svg>
+            <p>Awaiting analysis...</p>
         </div>
 
-        <div class="report-filled" id="diagnosisResults" hidden>
+        <!-- Filled -->
+        <div class="results-filled" id="diagnosisResults" hidden>
+            <!-- Primary -->
             <div class="diagnosis-card primary" id="primaryResult">
-                <div class="dx-label">Classification</div>
-                <div class="dx-class" id="resultClass"></div>
-                <div class="conf-row">
+                <div class="diagnosis-label">Primary Classification</div>
+                <div class="diagnosis-class" id="resultClass">-</div>
+                <div class="confidence-row">
                     <div class="conf-track"><div class="conf-fill" id="confidenceFill"></div></div>
                     <span class="conf-pct" id="confidenceValue">0%</span>
                 </div>
             </div>
 
+            <!-- Description -->
             <div class="diagnosis-card">
-                <div class="dx-label">Description</div>
-                <p class="dx-desc" id="resultDescription"></p>
+                <div class="diagnosis-label">Clinical Description</div>
+                <p class="diagnosis-desc" id="resultDescription">-</p>
             </div>
 
+            <!-- Probabilities -->
             <div class="diagnosis-card">
-                <div class="dx-label">Class Probabilities</div>
+                <div class="diagnosis-label">Class Probabilities</div>
                 <div id="probList" class="prob-list"></div>
             </div>
 
-            <div class="diagnosis-card">
-                <div class="dx-label">Model</div>
+            <!-- Model info -->
+            <div class="diagnosis-card model-meta">
+                <div class="diagnosis-label">Model Information</div>
                 <div class="meta-grid">
-                    <div class="meta-row"><span class="meta-k">Architecture</span><span class="meta-v">ResNet-18 + CBAM</span></div>
-                    <div class="meta-row"><span class="meta-k">Input</span><span class="meta-v">64 &times; 64 &times; 3</span></div>
-                    <div class="meta-row"><span class="meta-k">Classes</span><span class="meta-v">5 (AAMI)</span></div>
+                    <div class="meta-item"><span class="meta-key">Architecture</span><span class="meta-val">ResNet-18 + CBAM</span></div>
+                    <div class="meta-item"><span class="meta-key">Attention</span><span class="meta-val">Channel + Spatial</span></div>
+                    <div class="meta-item"><span class="meta-key">Input Size</span><span class="meta-val">64 &times; 64 &times; 3</span></div>
+                    <div class="meta-item"><span class="meta-key">Classes</span><span class="meta-val">5 (MIT-BIH)</span></div>
                 </div>
             </div>
 
-            <button class="btn-export" id="exportBtn">Export report</button>
+            <button class="btn-export" id="exportBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Export Report
+            </button>
         </div>
     </aside>
 

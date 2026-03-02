@@ -279,7 +279,7 @@ async function loadRandomSample() {
         showError('Error loading sample: ' + error.message);
     } finally {
         elements.loadRandomBtn.disabled = false;
-        elements.loadRandomBtn.textContent = 'Load random sample';
+        elements.loadRandomBtn.textContent = 'Load Random Sample';
     }
 }
 
@@ -330,7 +330,7 @@ function setAnalyzing(analyzing) {
         btnLoader.hidden = false;
     } else {
         elements.analyzeBtn.disabled = false;
-        btnText.textContent = 'Analyze signal';
+        btnText.textContent = 'Analyze Signal';
         btnLoader.hidden = true;
     }
 }
